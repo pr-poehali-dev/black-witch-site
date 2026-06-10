@@ -184,6 +184,14 @@ function Candle({ delay = 0, height = 60 }: { delay?: number; height?: number })
 export default function Index() {
   const [activeSection, setActiveSection] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [formName, setFormName] = useState("");
+  const [formContact, setFormContact] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+
+  const handleSubmit = () => {
+    const text = `Новое обращение с сайта Мораны:%0A%0AИмя: ${encodeURIComponent(formName)}%0AКонтакт: ${encodeURIComponent(formContact)}%0AСитуация: ${encodeURIComponent(formMessage)}`;
+    window.open(`https://wa.me/79251885363?text=${text}`, "_blank");
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -797,32 +805,43 @@ export default function Index() {
               <input
                 type="text"
                 placeholder="Ваше имя"
+                value={formName}
+                onChange={(e) => setFormName(e.target.value)}
                 className="w-full px-5 py-4 outline-none"
                 style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
               />
               <input
                 type="text"
                 placeholder="Telegram или телефон"
+                value={formContact}
+                onChange={(e) => setFormContact(e.target.value)}
                 className="w-full px-5 py-4 outline-none"
                 style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
               />
               <textarea
                 rows={4}
                 placeholder="Расскажите о вашей ситуации..."
+                value={formMessage}
+                onChange={(e) => setFormMessage(e.target.value)}
                 className="w-full px-5 py-4 outline-none resize-none"
                 style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
               />
-              <button className="btn-dark w-full">Отправить обращение</button>
+              <button className="btn-dark w-full" onClick={handleSubmit}>Отправить обращение</button>
             </div>
           </div>
 
           <div className="reveal mt-10 flex flex-col sm:flex-row gap-5 justify-center">
             {[
-              { icon: "MessageCircle", label: "Telegram", value: "@morana_witch" },
-              { icon: "Phone", label: "Телефон", value: "+7 (999) 000-00-00" },
-              { icon: "Clock", label: "Время приёма", value: "Пн–Пт, 10:00–20:00" },
+              { icon: "Phone", label: "WhatsApp", value: "+7 (925) 188-53-63", href: "https://wa.me/79251885363" },
+              { icon: "MessageCircle", label: "Telegram", value: "+7 (925) 188-53-63", href: "https://t.me/+79251885363" },
+              { icon: "Clock", label: "Время приёма", value: "Пн–Пт, 10:00–20:00", href: null },
             ].map((contact) => (
-              <div key={contact.label} className="flex flex-col items-center gap-2 p-5" style={{ border: "1px solid rgba(70,30,10,0.18)" }}>
+              <div
+                key={contact.label}
+                className="flex flex-col items-center gap-2 p-5 cursor-pointer card-hover"
+                style={{ border: "1px solid rgba(70,30,10,0.18)" }}
+                onClick={() => contact.href && window.open(contact.href, "_blank")}
+              >
                 <Icon name={contact.icon} size={18} style={{ color: "rgba(139,0,0,0.65)" }} />
                 <div className="text-xs tracking-widest" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(140,110,70,0.45)" }}>{contact.label}</div>
                 <div className="text-sm" style={{ color: "rgba(200,170,120,0.7)", fontWeight: 300 }}>{contact.value}</div>
