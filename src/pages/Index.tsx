@@ -94,6 +94,21 @@ const cardServices = [
   { icon: "😱", title: "Кошмарами истерзать", desc: "Наведение ночных кошмаров и бессонницы на обидчика.", price: "7 000 ₽", term: "неделя", note: "" },
 ];
 
+const manifestService = {
+  price: "6 000 ₽",
+  steps: [
+    { num: "01", title: "Анализ ситуации", desc: "Глубокое изучение вашей жизненной ситуации, выявление скрытых блоков и ограничений сознания." },
+    { num: "02", title: "Создание манифеста", desc: "Индивидуальный манифест, направленный на пробуждение сознания и восстановление связи с памятью души." },
+    { num: "03", title: "Практическое применение", desc: "Инструкции по интеграции манифеста в повседневную жизнь для достижения желаемых изменений." },
+  ],
+  benefits: [
+    "Освобождение от деструктивных программ и негативных установок",
+    "Свобода воли в мыслях и полный контроль над эмоциями",
+    "Пробуждение сознания и открытие новых возможностей",
+    "Восстановление связи с душой и обретение внутреннего покоя",
+  ],
+};
+
 const reviews = [
   {
     name: "Анастасия К.",
@@ -607,6 +622,69 @@ export default function Index() {
 
           <div className="text-center mt-12 reveal">
             <button className="btn-dark" onClick={() => scrollTo("contacts")}>Заказать ритуал</button>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MANIFEST ─── */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(60,10,0,0.3) 0%, transparent 60%)" }} />
+        <div className="container mx-auto px-6 max-w-5xl relative">
+          <div className="text-center mb-16 reveal">
+            <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>ПРОБУЖДЕНИЕ СОЗНАНИЯ</p>
+            <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Индивидуальный манифест</h2>
+            <p className="mt-4 text-sm italic" style={{ color: "rgba(160,130,90,0.5)", fontFamily: "'Cormorant Garamond', serif" }}>
+              освобождение от деструктивных программ и связь с памятью души
+            </p>
+            <div className="section-divider mt-6"><span className="text-red-900/60 text-lg">✦</span></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-10 items-start">
+            {/* Steps */}
+            <div className="reveal space-y-6">
+              {manifestService.steps.map((step) => (
+                <div key={step.num} className="flex gap-5">
+                  <div
+                    className="flex-shrink-0 w-10 h-10 flex items-center justify-center"
+                    style={{ border: "1px solid rgba(139,0,0,0.3)", color: "rgba(139,0,0,0.6)", fontFamily: "'Cormorant SC', serif", fontSize: "11px", letterSpacing: "1px" }}
+                  >
+                    {step.num}
+                  </div>
+                  <div>
+                    <h4 className="text-base font-light mb-1" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#b8906a" }}>{step.title}</h4>
+                    <p className="text-sm leading-relaxed" style={{ color: "rgba(170,145,110,0.55)", fontWeight: 300 }}>{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Benefits + price */}
+            <div className="reveal space-y-5">
+              <div className="p-7" style={{ background: "rgba(8,4,2,0.95)", border: "1px solid rgba(100,40,10,0.22)" }}>
+                <p className="text-xs tracking-[4px] mb-5" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(160,110,60,0.5)" }}>ПРЕИМУЩЕСТВА</p>
+                <div className="space-y-3">
+                  {manifestService.benefits.map((b, i) => (
+                    <div key={i} className="flex gap-3 text-sm" style={{ color: "rgba(180,155,115,0.65)", fontWeight: 300 }}>
+                      <span style={{ color: "rgba(139,0,0,0.45)", flexShrink: 0, marginTop: "3px" }}>◆</span>
+                      <span>{b}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-7 pt-6" style={{ borderTop: "1px solid rgba(80,30,10,0.2)" }}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs tracking-[3px]" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(140,110,70,0.45)" }}>СТОИМОСТЬ</span>
+                    <span className="text-2xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(0 55% 42%)" }}>
+                      {manifestService.price}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <button className="btn-dark w-full" onClick={() => scrollTo("contacts")}>
+                Заказать манифест
+              </button>
+            </div>
           </div>
         </div>
       </section>
