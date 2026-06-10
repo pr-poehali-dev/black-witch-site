@@ -1,0 +1,21 @@
+{
+  "tests": [
+    {
+      "name": "GET reviews",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"id": 1},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST review",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Тест", "city": "Москва", "text": "Отличная ведьма!", "stars": 5},
+      "expectedStatus": 201,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

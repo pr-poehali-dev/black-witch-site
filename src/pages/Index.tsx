@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 
+const REVIEWS_URL = "https://functions.poehali.dev/d8573972-b8b9-4a8a-88d2-0b47e107d670";
+
 const WITCH_IMAGE = "https://cdn.poehali.dev/projects/5c285f89-5dcb-4132-afd0-a2a00185954d/files/02fd8b3a-cdb5-4347-8aed-acb0df0f9b6f.jpg";
 const ARTIFACTS_IMAGE = "https://cdn.poehali.dev/projects/5c285f89-5dcb-4132-afd0-a2a00185954d/files/e5bd60a9-b681-4075-9301-c7ac1cdbad07.jpg";
 const BG_IMAGE = "https://cdn.poehali.dev/projects/5c285f89-5dcb-4132-afd0-a2a00185954d/files/62818806-4b51-40aa-80d8-fa91e7f774a2.jpg";
@@ -109,26 +111,7 @@ const manifestService = {
   ],
 };
 
-const reviews = [
-  {
-    name: "Анастасия К.",
-    city: "Москва",
-    text: "После ритуала на привлечение удачи в бизнесе мои доходы выросли вдвое за три месяца. Морана — настоящий мастер.",
-    stars: 5,
-  },
-  {
-    name: "Виктор Л.",
-    city: "Санкт-Петербург",
-    text: "Обратился по поводу снятия порчи. Уже на следующий день почувствовал облегчение. Результат держится уже год.",
-    stars: 5,
-  },
-  {
-    name: "Елена С.",
-    city: "Казань",
-    text: "Гадание на хрустальном шаре поразило точностью. Всё, что было сказано — сбылось до мелочей.",
-    stars: 5,
-  },
-];
+
 
 const artifacts = [
   {
@@ -191,6 +174,49 @@ export default function Index() {
   const handleSubmit = () => {
     const text = `Новое обращение с сайта Мораны:%0A%0AИмя: ${encodeURIComponent(formName)}%0AКонтакт: ${encodeURIComponent(formContact)}%0AСитуация: ${encodeURIComponent(formMessage)}`;
     window.open(`https://wa.me/79251885363?text=${text}`, "_blank");
+  };
+
+  type Review = { id: number; name: string; city: string; text: string; stars: number; created_at: string };
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewForm, setReviewForm] = useState({ name: "", city: "", text: "", stars: 5 });
+  const [reviewSent, setReviewSent] = useState(false);
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
+  useEffect(() => {
+    fetch(REVIEWS_URL)
+      .then((r) => r.json())
+      .then((data) => setReviews(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, []);
+
+  const submitReview = async () => {
+    if (!reviewForm.name.trim() || !reviewForm.text.trim()) return;
+    setReviewLoading(true);
+    try {
+      const res = await fetch(REVIEWS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reviewForm),
+      });
+      if (res.ok) {
+        const newReview: Review = {
+          id: Date.now(),
+          name: reviewForm.name,
+          city: reviewForm.city,
+          text: reviewForm.text,
+          stars: reviewForm.stars,
+          created_at: new Date().toISOString(),
+        };
+        setReviews((prev) => [newReview, ...prev]);
+        setReviewForm({ name: "", city: "", text: "", stars: 5 });
+        setReviewSent(true);
+        setShowReviewForm(false);
+        setTimeout(() => setReviewSent(false), 4000);
+      }
+    } finally {
+      setReviewLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -748,18 +774,28 @@ export default function Index() {
       <section id="reviews" className="py-32 relative">
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(40,0,0,0.3) 0%, transparent 60%)" }} />
         <div className="container mx-auto px-6 max-w-5xl relative">
-          <div className="text-center mb-20 reveal">
+          <div className="text-center mb-16 reveal">
             <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>СЛОВА ОБРАТИВШИХСЯ</p>
             <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Отзывы</h2>
             <div className="section-divider mt-6"><span className="text-red-900/60 text-lg">✦</span></div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          {/* Success message */}
+          {reviewSent && (
+            <div className="text-center mb-8 py-4 px-6 reveal" style={{ background: "rgba(60,20,5,0.4)", border: "1px solid rgba(139,0,0,0.3)" }}>
+              <p className="text-sm" style={{ fontFamily: "'Cormorant Garamond', serif", color: "rgba(200,170,120,0.9)", fontStyle: "italic" }}>
+                Ваш отзыв принят. Духи донесут его до нужных ушей.
+              </p>
+            </div>
+          )}
+
+          {/* Reviews grid */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
             {reviews.map((review, i) => (
               <div
-                key={i}
+                key={review.id}
                 className="reveal card-hover p-8"
-                style={{ background: "rgba(10,5,3,0.8)", border: "1px solid rgba(80,30,10,0.18)", transitionDelay: `${i * 0.1}s` }}
+                style={{ background: "rgba(10,5,3,0.8)", border: "1px solid rgba(80,30,10,0.18)", transitionDelay: `${i * 0.07}s` }}
               >
                 <div className="flex gap-1 mb-5">
                   {Array.from({ length: review.stars }).map((_, j) => (
@@ -772,10 +808,84 @@ export default function Index() {
                 <div className="h-px mb-5" style={{ background: "rgba(100,50,20,0.18)" }} />
                 <div>
                   <div className="text-sm font-light" style={{ color: "rgba(180,140,90,0.75)", fontFamily: "'Cormorant SC', serif" }}>{review.name}</div>
-                  <div className="text-xs mt-1" style={{ color: "rgba(140,110,70,0.4)", letterSpacing: "2px" }}>{review.city}</div>
+                  {review.city && <div className="text-xs mt-1" style={{ color: "rgba(140,110,70,0.4)", letterSpacing: "2px" }}>{review.city}</div>}
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Leave review button / form */}
+          <div className="text-center reveal">
+            {!showReviewForm ? (
+              <button className="btn-dark" onClick={() => setShowReviewForm(true)}>
+                Оставить отзыв
+              </button>
+            ) : (
+              <div className="p-8 text-left max-w-xl mx-auto" style={{ background: "rgba(8,4,2,0.97)", border: "1px solid rgba(100,40,10,0.25)" }}>
+                <p className="text-xs tracking-[4px] mb-6 text-center" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(160,110,60,0.5)" }}>
+                  ВАШЕ СЛОВО
+                </p>
+
+                {/* Stars selector */}
+                <div className="flex justify-center gap-2 mb-5">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setReviewForm((f) => ({ ...f, stars: s }))}
+                      style={{
+                        background: "none", border: "none", cursor: "pointer",
+                        fontSize: "22px",
+                        color: s <= reviewForm.stars ? "hsl(42 65% 50%)" : "rgba(100,80,40,0.3)",
+                        transition: "color 0.2s",
+                      }}
+                    >★</button>
+                  ))}
+                </div>
+
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Ваше имя *"
+                    value={reviewForm.name}
+                    onChange={(e) => setReviewForm((f) => ({ ...f, name: e.target.value }))}
+                    className="w-full px-4 py-3 outline-none"
+                    style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Город"
+                    value={reviewForm.city}
+                    onChange={(e) => setReviewForm((f) => ({ ...f, city: e.target.value }))}
+                    className="w-full px-4 py-3 outline-none"
+                    style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
+                  />
+                  <textarea
+                    rows={4}
+                    placeholder="Ваш отзыв *"
+                    value={reviewForm.text}
+                    onChange={(e) => setReviewForm((f) => ({ ...f, text: e.target.value }))}
+                    className="w-full px-4 py-3 outline-none resize-none"
+                    style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
+                  />
+                  <div className="flex gap-3">
+                    <button
+                      className="btn-dark flex-1"
+                      onClick={submitReview}
+                      style={{ opacity: reviewLoading ? 0.6 : 1 }}
+                    >
+                      {reviewLoading ? "Отправка..." : "Отправить"}
+                    </button>
+                    <button
+                      className="btn-dark"
+                      onClick={() => setShowReviewForm(false)}
+                      style={{ borderColor: "rgba(60,30,10,0.4)", padding: "14px 20px" }}
+                    >
+                      <Icon name="X" size={14} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
