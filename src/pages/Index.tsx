@@ -1,17 +1,575 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useRef, useState } from "react";
+import Icon from "@/components/ui/icon";
 
-const Index = () => {
+const WITCH_IMAGE = "https://cdn.poehali.dev/projects/5c285f89-5dcb-4132-afd0-a2a00185954d/files/02fd8b3a-cdb5-4347-8aed-acb0df0f9b6f.jpg";
+const ARTIFACTS_IMAGE = "https://cdn.poehali.dev/projects/5c285f89-5dcb-4132-afd0-a2a00185954d/files/e5bd60a9-b681-4075-9301-c7ac1cdbad07.jpg";
+const BG_IMAGE = "https://cdn.poehali.dev/projects/5c285f89-5dcb-4132-afd0-a2a00185954d/files/62818806-4b51-40aa-80d8-fa91e7f774a2.jpg";
+
+const services = [
+  {
+    icon: "🕯️",
+    title: "Любовные обряды",
+    desc: "Притяжение, привороты, снятие соперников. Работа с тонким планом.",
+    price: "от 7 000 ₽",
+  },
+  {
+    icon: "🌑",
+    title: "Снятие порчи и сглаза",
+    desc: "Диагностика и очищение энергетики. Защита рода на 7 поколений.",
+    price: "от 5 000 ₽",
+  },
+  {
+    icon: "🔮",
+    title: "Гадание и предсказание",
+    desc: "Таро, руны, хрустальный шар. Ответы на сокровенные вопросы судьбы.",
+    price: "от 3 000 ₽",
+  },
+  {
+    icon: "⚔️",
+    title: "Боевая магия",
+    desc: "Защита, возврат ущерба, справедливость через тёмные силы.",
+    price: "от 12 000 ₽",
+  },
+  {
+    icon: "🌿",
+    title: "Зелья и настои",
+    desc: "Авторские составы на древних рецептах. Для здоровья, удачи, защиты.",
+    price: "от 2 000 ₽",
+  },
+  {
+    icon: "🌙",
+    title: "Ритуалы на луну",
+    desc: "Новолунные и полнолунные обряды усиления намерений.",
+    price: "от 8 000 ₽",
+  },
+];
+
+const reviews = [
+  {
+    name: "Анастасия К.",
+    city: "Москва",
+    text: "После ритуала на привлечение удачи в бизнесе мои доходы выросли вдвое за три месяца. Морана — настоящий мастер.",
+    stars: 5,
+  },
+  {
+    name: "Виктор Л.",
+    city: "Санкт-Петербург",
+    text: "Обратился по поводу снятия порчи. Уже на следующий день почувствовал облегчение. Результат держится уже год.",
+    stars: 5,
+  },
+  {
+    name: "Елена С.",
+    city: "Казань",
+    text: "Гадание на хрустальном шаре поразило точностью. Всё, что было сказано — сбылось до мелочей.",
+    stars: 5,
+  },
+];
+
+const artifacts = [
+  {
+    title: "Зеркало Мораны",
+    desc: "Старинное магическое зеркало для ясновидения. Серебряная рама XVII века.",
+    price: "45 000 ₽",
+  },
+  {
+    title: "Руническая плита",
+    desc: "Гранитная плита с вырезанными рунами Старшего Футарка. Освящена в полнолуние.",
+    price: "18 000 ₽",
+  },
+  {
+    title: "Чёрная свеча ручной работы",
+    desc: "Изготовлена с добавлением трав и эфирных масел. Усиливает защитные практики.",
+    price: "800 ₽",
+  },
+  {
+    title: "Амулет «Вечная тьма»",
+    desc: "Серебряный медальон с чёрным ониксом. Защищает владельца от враждебной магии.",
+    price: "12 000 ₽",
+  },
+];
+
+function Candle({ delay = 0, height = 60 }: { delay?: number; height?: number }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 color-black text-black">Добро пожаловать!</h1>
-        <p className="text-xl text-gray-600">тут будет отображаться ваш проект</p>
+    <div className="flex flex-col items-center" style={{ animationDelay: `${delay}s` }}>
+      <div className="w-3 h-8 relative animate-flicker" style={{ animationDelay: `${delay}s` }}>
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-6"
+          style={{
+            background: "radial-gradient(ellipse at 50% 90%, rgba(255,180,50,0.9) 0%, rgba(255,80,0,0.6) 40%, transparent 80%)",
+            filter: "blur(2px)",
+          }}
+        />
+        <div
+          className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-3"
+          style={{ background: "radial-gradient(ellipse, #fff5c0 20%, #ffb020 60%, transparent 100%)" }}
+        />
       </div>
-      <span className="absolute bottom-8 left-1/2 -translate-x-1/2 inline-block bg-[#FF6637] text-white text-sm px-4 py-2 rounded-full whitespace-nowrap">
-        Подождите 5 минут, Юра создает первую версию проекта с нуля
-      </span>
+      <div
+        className="w-4 rounded-sm"
+        style={{
+          height: `${height}px`,
+          background: "linear-gradient(to bottom, #3a2010, #1a0a05)",
+          boxShadow: "0 0 8px rgba(0,0,0,0.8)",
+        }}
+      />
     </div>
   );
-};
+}
 
-export default Index;
+export default function Index() {
+  const [activeSection, setActiveSection] = useState("home");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      },
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["home", "about", "services", "artifacts", "reviews", "contacts"];
+      for (const id of [...sections].reverse()) {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 200) {
+          setActiveSection(id);
+          break;
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
+  };
+
+  const navItems = [
+    { id: "home", label: "Главная" },
+    { id: "about", label: "О ведьме" },
+    { id: "services", label: "Услуги" },
+    { id: "artifacts", label: "Артефакты" },
+    { id: "reviews", label: "Отзывы" },
+    { id: "contacts", label: "Контакты" },
+  ];
+
+  return (
+    <div className="min-h-screen" style={{ background: "#080808" }}>
+      <div className="noise-overlay" />
+      <div className="vignette" />
+
+      {/* Navigation */}
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5"
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.95), transparent)", backdropFilter: "blur(4px)" }}
+      >
+        <div
+          className="text-lg tracking-widest cursor-pointer"
+          style={{ fontFamily: "'Cormorant SC', serif", color: "hsl(42 70% 52%)" }}
+          onClick={() => scrollTo("home")}
+        >
+          М О Р А Н А
+        </div>
+
+        <div className="hidden md:flex items-center gap-10">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              className="nav-link"
+              style={{
+                color: activeSection === item.id ? "hsl(42 70% 52%)" : "rgba(200,170,120,0.6)",
+                background: "none",
+                border: "none",
+              }}
+              onClick={() => scrollTo(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        <button
+          className="md:hidden"
+          style={{ background: "none", border: "none", color: "hsl(42 70% 52%)" }}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <Icon name={menuOpen ? "X" : "Menu"} size={22} />
+        </button>
+      </nav>
+
+      {menuOpen && (
+        <div
+          className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8"
+          style={{ background: "rgba(4,2,2,0.97)" }}
+        >
+          {navItems.map((item, i) => (
+            <button
+              key={item.id}
+              className="nav-link text-base"
+              style={{
+                background: "none",
+                border: "none",
+                opacity: 0,
+                animation: `reveal-up 0.5s ease-out ${i * 0.07}s forwards`,
+              }}
+              onClick={() => scrollTo(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* ─── HERO ─── */}
+      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${BG_IMAGE})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "brightness(0.22) saturate(0.5)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "radial-gradient(ellipse at 50% 60%, rgba(80,0,0,0.45) 0%, transparent 70%)" }}
+        />
+
+        {/* Candles row */}
+        <div className="absolute bottom-0 left-0 right-0 flex justify-around items-end px-8 pb-2 opacity-55">
+          {[0, 0.3, 0.8, 1.2, 1.7, 0.5, 1.0, 0.2, 1.5].map((delay, i) => (
+            <Candle key={i} delay={delay} height={40 + (i % 3) * 20} />
+          ))}
+        </div>
+
+        {/* Floating particles */}
+        <div className="particles-container">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div
+              key={i}
+              className="particle"
+              style={{
+                left: `${10 + i * 9}%`,
+                bottom: "25%",
+                animationDelay: `${i * 0.45}s`,
+                animationDuration: `${3.5 + (i % 3) * 0.8}s`,
+                ["--drift" as string]: `${(i % 2 === 0 ? 1 : -1) * (10 + i * 3)}px`,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+          {/* Rune ring */}
+          <div className="flex justify-center mb-8">
+            <div className="relative w-20 h-20">
+              <div
+                className="absolute inset-0 rounded-full border border-red-900/40 animate-rune"
+                style={{ borderStyle: "dashed" }}
+              />
+              <div className="absolute inset-3 rounded-full border border-yellow-900/30 animate-rune-reverse" />
+              <div className="absolute inset-0 flex items-center justify-center text-2xl animate-float">
+                ☽
+              </div>
+            </div>
+          </div>
+
+          <p
+            className="mb-3 tracking-[6px] text-xs font-light"
+            style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.65)", animation: "reveal-fade 1.5s ease-out forwards" }}
+          >
+            ТЁМНЫЕ ПРАКТИКИ · ВЫСШЕЕ ПОСВЯЩЕНИЕ
+          </p>
+
+          <h1
+            className="text-7xl md:text-9xl font-light mb-4 shimmer-text"
+            style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: "-1px", lineHeight: 1, animation: "reveal-up 1.2s ease-out 0.2s both" }}
+          >
+            Морана
+          </h1>
+
+          <p
+            className="text-xl md:text-2xl font-light mb-10 italic"
+            style={{ fontFamily: "'Cormorant Garamond', serif", color: "rgba(200,160,100,0.7)", animation: "reveal-up 1.2s ease-out 0.4s both" }}
+          >
+            Чёрная Ведьма. Хозяйка тьмы и тайн.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center" style={{ animation: "reveal-up 1.2s ease-out 0.6s both" }}>
+            <button className="btn-dark" onClick={() => scrollTo("services")}>Мои услуги</button>
+            <button className="btn-dark" style={{ borderColor: "rgba(80,50,20,0.5)" }} onClick={() => scrollTo("contacts")}>Записаться</button>
+          </div>
+        </div>
+
+        <div className="absolute bottom-36 left-1/2 -translate-x-1/2 animate-float" style={{ color: "rgba(180,120,60,0.35)" }}>
+          <Icon name="ChevronDown" size={20} />
+        </div>
+      </section>
+
+      {/* ─── ABOUT ─── */}
+      <section id="about" className="relative py-32 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(139,0,0,0.3) 40px, rgba(139,0,0,0.3) 41px)" }}
+        />
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="reveal relative group">
+              <div className="absolute -inset-px" style={{ background: "linear-gradient(135deg, rgba(139,0,0,0.4), transparent, rgba(139,0,0,0.2))" }} />
+              <div className="relative overflow-hidden" style={{ aspectRatio: "3/4" }}>
+                <img
+                  src={WITCH_IMAGE}
+                  alt="Морана — чёрная ведьма"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  style={{ filter: "saturate(0.65) contrast(1.1)" }}
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)" }} />
+              </div>
+              <div className="absolute top-0 left-0 w-8 h-8 border-t border-l" style={{ borderColor: "rgba(180,120,60,0.35)" }} />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r" style={{ borderColor: "rgba(180,120,60,0.35)" }} />
+            </div>
+
+            <div className="reveal space-y-6">
+              <div className="section-divider">
+                <span className="text-xs tracking-[5px] font-light" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.55)" }}>
+                  О ВЕДЬМЕ
+                </span>
+              </div>
+
+              <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a", lineHeight: 1.1 }}>
+                Хранительница<br /><em>древних знаний</em>
+              </h2>
+
+              <p className="text-base leading-relaxed" style={{ color: "rgba(200,180,150,0.65)", fontWeight: 300 }}>
+                Я практикую тёмную магию более двадцати лет. Моя сила унаследована по женской линии — от бабки к матери, от матери ко мне. Каждый обряд я провожу лично, вкладывая всю свою силу и намерение.
+              </p>
+              <p className="text-base leading-relaxed" style={{ color: "rgba(200,180,150,0.65)", fontWeight: 300 }}>
+                Я не обещаю лёгких путей — настоящая магия требует жертв и терпения. Но если вы готовы к работе со мной, результат будет.
+              </p>
+
+              <div className="flex gap-12 pt-4">
+                {[
+                  { num: "20+", label: "лет практики" },
+                  { num: "2 000+", label: "обрядов" },
+                  { num: "98%", label: "результативность" },
+                ].map((stat) => (
+                  <div key={stat.label} className="text-center">
+                    <div className="text-3xl font-light animate-glow-text" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(42 70% 52%)" }}>
+                      {stat.num}
+                    </div>
+                    <div className="text-xs tracking-widest mt-1" style={{ color: "rgba(180,150,100,0.45)", fontFamily: "'Cormorant SC', serif" }}>
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── SERVICES ─── */}
+      <section id="services" className="py-32 relative">
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(60,0,0,0.35) 0%, transparent 60%)" }} />
+        <div className="container mx-auto px-6 max-w-6xl relative">
+          <div className="text-center mb-20 reveal">
+            <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>ЧТО Я ДЕЛАЮ</p>
+            <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Услуги</h2>
+            <div className="section-divider mt-6"><span className="text-red-900/60 text-lg">✦</span></div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((service, i) => (
+              <div
+                key={i}
+                className="reveal card-hover gothic-border p-8 group cursor-pointer"
+                style={{ background: "rgba(12,6,4,0.9)", transitionDelay: `${i * 0.05}s` }}
+              >
+                <div className="text-3xl mb-5 animate-float" style={{ animationDelay: `${i * 0.3}s` }}>
+                  {service.icon}
+                </div>
+                <h3 className="text-xl font-light mb-3" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a878" }}>
+                  {service.title}
+                </h3>
+                <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(180,160,130,0.55)", fontWeight: 300 }}>
+                  {service.desc}
+                </p>
+                <div className="text-sm font-light" style={{ fontFamily: "'Cormorant SC', serif", color: "hsl(0 55% 42%)", letterSpacing: "1px" }}>
+                  {service.price}
+                </div>
+                <div className="mt-4 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: "rgba(139,0,0,0.35)" }} />
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12 reveal">
+            <button className="btn-dark" onClick={() => scrollTo("contacts")}>Получить консультацию</button>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── ARTIFACTS ─── */}
+      <section id="artifacts" className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-8" style={{ backgroundImage: `url(${ARTIFACTS_IMAGE})`, backgroundSize: "cover", backgroundPosition: "center", filter: "brightness(0.3) saturate(0.4)" }} />
+        <div className="absolute inset-0" style={{ background: "rgba(4,2,1,0.9)" }} />
+
+        <div className="container mx-auto px-6 max-w-6xl relative">
+          <div className="text-center mb-20 reveal">
+            <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>МАГИЧЕСКИЕ ПРЕДМЕТЫ</p>
+            <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Артефакты</h2>
+            <div className="section-divider mt-6"><span className="text-red-900/60 text-lg">✦</span></div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {artifacts.map((art, i) => (
+              <div
+                key={i}
+                className="reveal card-hover p-6 group cursor-pointer"
+                style={{ background: "rgba(10,5,3,0.95)", border: "1px solid rgba(100,40,10,0.22)", transitionDelay: `${i * 0.08}s` }}
+              >
+                <div
+                  className="w-10 h-10 rounded-full mb-5 flex items-center justify-center"
+                  style={{ background: "rgba(80,0,0,0.25)", border: "1px solid rgba(139,0,0,0.3)" }}
+                >
+                  <Icon name="Gem" size={16} style={{ color: "rgba(180,80,60,0.65)" }} />
+                </div>
+                <h3 className="text-base font-light mb-2" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#b89a60" }}>
+                  {art.title}
+                </h3>
+                <p className="text-xs leading-relaxed mb-4" style={{ color: "rgba(160,140,110,0.5)", fontWeight: 300 }}>
+                  {art.desc}
+                </p>
+                <div className="text-sm" style={{ fontFamily: "'Cormorant SC', serif", color: "hsl(0 55% 38%)", letterSpacing: "1px" }}>
+                  {art.price}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10 reveal">
+            <p className="text-xs tracking-[3px] mb-6" style={{ color: "rgba(150,120,80,0.45)", fontFamily: "'Cormorant SC', serif" }}>
+              ВСЕ АРТЕФАКТЫ ПРОХОДЯТ ОБРЯД ОСВЯЩЕНИЯ
+            </p>
+            <button className="btn-dark" onClick={() => scrollTo("contacts")}>Заказать артефакт</button>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── REVIEWS ─── */}
+      <section id="reviews" className="py-32 relative">
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(40,0,0,0.3) 0%, transparent 60%)" }} />
+        <div className="container mx-auto px-6 max-w-5xl relative">
+          <div className="text-center mb-20 reveal">
+            <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>СЛОВА ОБРАТИВШИХСЯ</p>
+            <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Отзывы</h2>
+            <div className="section-divider mt-6"><span className="text-red-900/60 text-lg">✦</span></div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {reviews.map((review, i) => (
+              <div
+                key={i}
+                className="reveal card-hover p-8"
+                style={{ background: "rgba(10,5,3,0.8)", border: "1px solid rgba(80,30,10,0.18)", transitionDelay: `${i * 0.1}s` }}
+              >
+                <div className="flex gap-1 mb-5">
+                  {Array.from({ length: review.stars }).map((_, j) => (
+                    <span key={j} style={{ color: "hsl(42 60% 45%)", fontSize: "12px" }}>★</span>
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed mb-6 italic" style={{ fontFamily: "'Cormorant Garamond', serif", color: "rgba(200,175,140,0.7)", fontSize: "15px" }}>
+                  «{review.text}»
+                </p>
+                <div className="h-px mb-5" style={{ background: "rgba(100,50,20,0.18)" }} />
+                <div>
+                  <div className="text-sm font-light" style={{ color: "rgba(180,140,90,0.75)", fontFamily: "'Cormorant SC', serif" }}>{review.name}</div>
+                  <div className="text-xs mt-1" style={{ color: "rgba(140,110,70,0.4)", letterSpacing: "2px" }}>{review.city}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CONTACTS ─── */}
+      <section id="contacts" className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(60,0,0,0.3) 0%, transparent 70%)" }} />
+        <div className="container mx-auto px-6 max-w-3xl relative text-center">
+          <div className="reveal mb-16">
+            <div className="flex justify-center mb-8">
+              <div className="relative w-16 h-16">
+                <div className="absolute inset-0 rounded-full border border-red-900/30 animate-rune" />
+                <div className="absolute inset-0 flex items-center justify-center text-xl animate-float">🌙</div>
+              </div>
+            </div>
+            <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>СВЯЗАТЬСЯ</p>
+            <h2 className="text-5xl md:text-6xl font-light mb-6" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Контакты</h2>
+            <p className="text-base leading-relaxed mb-12" style={{ color: "rgba(180,150,110,0.55)", fontWeight: 300 }}>
+              Запись на консультацию и обряды — только через личное обращение.<br />
+              Я работаю с теми, кого выбирает судьба.
+            </p>
+            <div className="section-divider mb-12"><span className="text-red-900/60 text-lg">✦</span></div>
+          </div>
+
+          <div className="reveal p-10" style={{ background: "rgba(8,4,2,0.95)", border: "1px solid rgba(100,40,10,0.22)" }}>
+            <div className="space-y-5">
+              <input
+                type="text"
+                placeholder="Ваше имя"
+                className="w-full px-5 py-4 outline-none"
+                style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
+              />
+              <input
+                type="text"
+                placeholder="Telegram или телефон"
+                className="w-full px-5 py-4 outline-none"
+                style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
+              />
+              <textarea
+                rows={4}
+                placeholder="Расскажите о вашей ситуации..."
+                className="w-full px-5 py-4 outline-none resize-none"
+                style={{ background: "rgba(15,7,4,0.8)", border: "1px solid rgba(80,30,10,0.28)", color: "rgba(200,175,140,0.85)", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px" }}
+              />
+              <button className="btn-dark w-full">Отправить обращение</button>
+            </div>
+          </div>
+
+          <div className="reveal mt-10 flex flex-col sm:flex-row gap-5 justify-center">
+            {[
+              { icon: "MessageCircle", label: "Telegram", value: "@morana_witch" },
+              { icon: "Phone", label: "Телефон", value: "+7 (999) 000-00-00" },
+              { icon: "Clock", label: "Время приёма", value: "Пн–Пт, 10:00–20:00" },
+            ].map((contact) => (
+              <div key={contact.label} className="flex flex-col items-center gap-2 p-5" style={{ border: "1px solid rgba(70,30,10,0.18)" }}>
+                <Icon name={contact.icon} size={18} style={{ color: "rgba(139,0,0,0.65)" }} />
+                <div className="text-xs tracking-widest" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(140,110,70,0.45)" }}>{contact.label}</div>
+                <div className="text-sm" style={{ color: "rgba(200,170,120,0.7)", fontWeight: 300 }}>{contact.value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-10 text-center" style={{ borderTop: "1px solid rgba(60,20,5,0.18)" }}>
+        <div className="text-2xl mb-3" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.35)" }}>
+          М О Р А Н А
+        </div>
+        <p className="text-xs tracking-widest" style={{ color: "rgba(120,90,50,0.3)", fontFamily: "'Cormorant SC', serif" }}>
+          © 2024 · ВСЕ ПРАВА ЗАЩИЩЕНЫ ТЁМНЫМИ СИЛАМИ
+        </p>
+      </footer>
+    </div>
+  );
+}
