@@ -7,40 +7,76 @@ const BG_IMAGE = "https://cdn.poehali.dev/projects/5c285f89-5dcb-4132-afd0-a2a00
 
 const services = [
   {
-    icon: "🕯️",
-    title: "Любовные обряды",
-    desc: "Притяжение, привороты, снятие соперников. Работа с тонким планом.",
-    price: "от 7 000 ₽",
+    icon: "👁️",
+    title: "Скинуть скуду через бесов",
+    desc: "Снятие тяжёлой порчи с задействованием тёмных сил. Срок проявления — 4 месяца.",
+    price: "6 000 ₽",
+    term: "4 месяца",
+    note: "",
+  },
+  {
+    icon: "🔥",
+    title: "Ритуал на обольщение через бесов",
+    desc: "Мощное притяжение и подчинение воли избранного человека. Быстрый результат.",
+    price: "2 000 ₽",
+    term: "1,5 недели",
+    note: "",
+  },
+  {
+    icon: "🪆",
+    title: "Приворот вуду с куклой и подчинением",
+    desc: "Полное подчинение воли объекта через обряд с куклой-вуду. Глубокое воздействие.",
+    price: "30 000 ₽",
+    term: "1 месяц",
+    note: "Применение куклы",
+  },
+  {
+    icon: "🩸",
+    title: "Половая привязка",
+    desc: "Крепчайшая привязка на физическом и энергетическом уровне через биоматериалы.",
+    price: "16 000 ₽",
+    term: "до 1 месяца",
+    note: "Биоматериалы мужа и жены",
+  },
+  {
+    icon: "🪆",
+    title: "Приворот на куклу",
+    desc: "Обряд привязки через куклу — образ объекта, созданный с намерением и силой.",
+    price: "12 000 ₽",
+    term: "до 1 месяца",
+    note: "Применение куклы",
+  },
+  {
+    icon: "🍯",
+    title: "Приворот медовый (по фотографии)",
+    desc: "Мягкий, но стойкий приворот с использованием сладкой магии. Работа по фото.",
+    price: "3 000 ₽",
+    term: "до 4 месяцев",
+    note: "По фотографии",
   },
   {
     icon: "🌑",
-    title: "Снятие порчи и сглаза",
-    desc: "Диагностика и очищение энергетики. Защита рода на 7 поколений.",
-    price: "от 5 000 ₽",
+    title: "Приворот «чёрная троица»",
+    desc: "Тройной удар тёмных сил — один из самых сильных привязывающих обрядов.",
+    price: "4 000 ₽",
+    term: "до 4 месяцев",
+    note: "",
   },
   {
-    icon: "🔮",
-    title: "Гадание и предсказание",
-    desc: "Таро, руны, хрустальный шар. Ответы на сокровенные вопросы судьбы.",
-    price: "от 3 000 ₽",
+    icon: "🫙",
+    title: "Варочная магия «кандалы страсти»",
+    desc: "Приготовление зелья на основе трав и тёмных компонентов. Страсть без возврата.",
+    price: "7 000 ₽",
+    term: "2 месяца",
+    note: "",
   },
   {
-    icon: "⚔️",
-    title: "Боевая магия",
-    desc: "Защита, возврат ущерба, справедливость через тёмные силы.",
-    price: "от 12 000 ₽",
-  },
-  {
-    icon: "🌿",
-    title: "Зелья и настои",
-    desc: "Авторские составы на древних рецептах. Для здоровья, удачи, защиты.",
-    price: "от 2 000 ₽",
-  },
-  {
-    icon: "🌙",
-    title: "Ритуалы на луну",
-    desc: "Новолунные и полнолунные обряды усиления намерений.",
-    price: "от 8 000 ₽",
+    icon: "🧿",
+    title: "Зомбирование (присушка)",
+    desc: "Подавление воли и создание зависимости от заказчика. Самый быстрый результат.",
+    price: "5 000 ₽",
+    term: "неделя",
+    note: "",
   },
 ];
 
@@ -383,31 +419,44 @@ export default function Index() {
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(60,0,0,0.35) 0%, transparent 60%)" }} />
         <div className="container mx-auto px-6 max-w-6xl relative">
           <div className="text-center mb-20 reveal">
-            <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>ЧТО Я ДЕЛАЮ</p>
-            <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Услуги</h2>
+            <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>РИТУАЛЬНЫЕ ПРАКТИКИ</p>
+            <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Ритуальные услуги</h2>
+            <p className="mt-4 text-sm" style={{ color: "rgba(160,130,90,0.5)", fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic" }}>
+              с использованием бесов, вуду и биоматериалов
+            </p>
             <div className="section-divider mt-6"><span className="text-red-900/60 text-lg">✦</span></div>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {services.map((service, i) => (
               <div
                 key={i}
-                className="reveal card-hover gothic-border p-8 group cursor-pointer"
+                className="reveal card-hover gothic-border p-7 group cursor-pointer flex flex-col"
                 style={{ background: "rgba(12,6,4,0.9)", transitionDelay: `${i * 0.05}s` }}
               >
-                <div className="text-3xl mb-5 animate-float" style={{ animationDelay: `${i * 0.3}s` }}>
+                <div className="text-3xl mb-4 animate-float" style={{ animationDelay: `${i * 0.3}s` }}>
                   {service.icon}
                 </div>
-                <h3 className="text-xl font-light mb-3" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a878" }}>
+                <h3 className="text-lg font-light mb-2" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a878", lineHeight: 1.3 }}>
                   {service.title}
                 </h3>
-                <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(180,160,130,0.55)", fontWeight: 300 }}>
+                <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: "rgba(180,160,130,0.5)", fontWeight: 300 }}>
                   {service.desc}
                 </p>
-                <div className="text-sm font-light" style={{ fontFamily: "'Cormorant SC', serif", color: "hsl(0 55% 42%)", letterSpacing: "1px" }}>
-                  {service.price}
+                {service.note ? (
+                  <div className="text-xs mb-3 flex items-center gap-1" style={{ color: "rgba(160,100,60,0.6)", letterSpacing: "0.5px" }}>
+                    <span style={{ color: "rgba(139,0,0,0.5)" }}>◆</span> {service.note}
+                  </div>
+                ) : null}
+                <div className="flex items-center justify-between mt-auto pt-3" style={{ borderTop: "1px solid rgba(80,30,10,0.2)" }}>
+                  <div className="text-base font-light" style={{ fontFamily: "'Cormorant SC', serif", color: "hsl(0 55% 42%)", letterSpacing: "1px" }}>
+                    {service.price}
+                  </div>
+                  <div className="text-xs" style={{ color: "rgba(140,110,70,0.45)", fontFamily: "'Cormorant SC', serif", letterSpacing: "1px" }}>
+                    {service.term}
+                  </div>
                 </div>
-                <div className="mt-4 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: "rgba(139,0,0,0.35)" }} />
+                <div className="mt-3 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: "rgba(139,0,0,0.35)" }} />
               </div>
             ))}
           </div>
