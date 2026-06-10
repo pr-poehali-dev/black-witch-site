@@ -428,6 +428,81 @@ export default function Index() {
         </div>
       </section>
 
+      {/* ─── ANNOUNCEMENT ─── */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(80,0,0,0.2) 0%, transparent 70%)" }} />
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(139,0,0,0.04) 30px, rgba(139,0,0,0.04) 31px)",
+          }}
+        />
+        <div className="container mx-auto px-6 max-w-3xl relative">
+          <div className="reveal" style={{ border: "1px solid rgba(139,0,0,0.25)", background: "rgba(8,3,2,0.97)", padding: "3rem" }}>
+            {/* Top ornament */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="flex-1 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(139,0,0,0.4))" }} />
+              <span className="text-xl animate-float" style={{ color: "rgba(139,0,0,0.7)" }}>🕯️</span>
+              <div className="flex-1 h-px" style={{ background: "linear-gradient(to left, transparent, rgba(139,0,0,0.4))" }} />
+            </div>
+
+            <p
+              className="text-xs tracking-[5px] text-center mb-6"
+              style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.45)" }}
+            >
+              ВАЖНОЕ ОБРАЩЕНИЕ
+            </p>
+
+            <h3
+              className="text-3xl md:text-4xl font-light text-center mb-8"
+              style={{ fontFamily: "'Cormorant Garamond', serif", color: "#b8906a", lineHeight: 1.3 }}
+            >
+              Почему нельзя так<br /><em>относиться к ведьме</em>
+            </h3>
+
+            <div className="space-y-5 text-sm leading-relaxed" style={{ color: "rgba(190,165,130,0.7)", fontWeight: 300 }}>
+              <p>
+                Каждый мой совет, каждый взгляд и даже краткое «посмотрю» — это расход реальной силы. Я не консультирую из вежливости. Я работаю. И эта работа имеет цену.
+              </p>
+              <p>
+                Когда мастер отдаёт энергию безвозмездно — духи берут своё сами. Они не спрашивают разрешения и не выбирают удобное время. Бесплатная помощь возвращается ко мне бедой.
+              </p>
+              <p>
+                Поэтому прошу запомнить раз и навсегда:
+              </p>
+
+              <div className="space-y-3 pl-4" style={{ borderLeft: "2px solid rgba(139,0,0,0.25)" }}>
+                {[
+                  "Не торопите меня вопросами «ну что там?» и «когда уже?». Высшие силы не работают по вашему расписанию.",
+                  "Не пишите в ночное время без крайней нужды — у меня есть своё время и своё пространство.",
+                  "Не ждите бесплатных советов. Я профессионал, а не подружка-добряшка.",
+                  "Относитесь ко мне как к мастеру своего дела — с уважением, соответствующим моему статусу.",
+                ].map((rule, i) => (
+                  <div key={i} className="flex gap-3">
+                    <span style={{ color: "rgba(139,0,0,0.5)", flexShrink: 0, marginTop: "2px" }}>◆</span>
+                    <p>{rule}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p
+                className="text-base italic pt-2"
+                style={{ fontFamily: "'Cormorant Garamond', serif", color: "rgba(190,155,100,0.65)" }}
+              >
+                Я не ваша подружка. Я ведьма. И моя энергия — это мой ресурс, который требует уважения и соответствующего вознаграждения.
+              </p>
+            </div>
+
+            {/* Bottom ornament */}
+            <div className="flex items-center gap-4 mt-8">
+              <div className="flex-1 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(139,0,0,0.3))" }} />
+              <span style={{ fontFamily: "'Cormorant SC', serif", fontSize: "11px", color: "rgba(160,110,60,0.4)", letterSpacing: "3px" }}>МОРАНА</span>
+              <div className="flex-1 h-px" style={{ background: "linear-gradient(to left, transparent, rgba(139,0,0,0.3))" }} />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── SERVICES ─── */}
       <section id="services" className="py-32 relative">
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(60,0,0,0.35) 0%, transparent 60%)" }} />
