@@ -80,6 +80,20 @@ const services = [
   },
 ];
 
+const cardServices = [
+  { icon: "❤️", title: "На любовь", desc: "Притяжение чувств и открытие сердца к любви.", price: "2 000 ₽", term: "", note: "" },
+  { icon: "🍀", title: "На удачу", desc: "Поток удачи и благоприятных событий во всех сферах.", price: "2 000 ₽", term: "", note: "" },
+  { icon: "⚖️", title: "На правосудие. Защита бесовская", desc: "Тёмная защита в делах правосудия. Бесовская сила на вашей стороне.", price: "3 000 ₽", term: "", note: "" },
+  { icon: "🏪", title: "Привлечение заказчиков", desc: "Ритуальный поток клиентов и заказов в ваш бизнес.", price: "12 000 ₽", term: "3 месяца", note: "" },
+  { icon: "🔥", title: "Болезни выжечь", desc: "Выжигание недугов тёмным огнём. Очищение тела и духа.", price: "6 000 ₽", term: "2 месяца", note: "" },
+  { icon: "🌕", title: "Приворот сокровый", desc: "Сокровенный приворот — самый глубокий и тихий. Только в полнолуние.", price: "6 000 ₽", term: "", note: "Только в полнолуние" },
+  { icon: "🌕", title: "Скрепить судьбы на век (чертов рог)", desc: "Скрепление двух судеб навечно через тёмный ритуал. Только в полнолуние.", price: "13 000 ₽", term: "", note: "Только в полнолуние" },
+  { icon: "🖤", title: "Страсть безудержная", desc: "Неугасимая страсть через волосы с лобка мужчины. Быстрый эффект.", price: "4 000 ₽", term: "3 недели", note: "Волосы с лобка мужчины" },
+  { icon: "🐺", title: "Распорка на шерсть", desc: "Разрыв нежелательных связей и привязанностей.", price: "3 000 ₽", term: "до 4 недель", note: "" },
+  { icon: "💀", title: "Врага болью извести", desc: "Насылание хронической боли и страданий на врага.", price: "12 000 ₽", term: "2 месяца", note: "" },
+  { icon: "😱", title: "Кошмарами истерзать", desc: "Наведение ночных кошмаров и бессонницы на обидчика.", price: "7 000 ₽", term: "неделя", note: "" },
+];
+
 const reviews = [
   {
     name: "Анастасия К.",
@@ -463,6 +477,61 @@ export default function Index() {
 
           <div className="text-center mt-12 reveal">
             <button className="btn-dark" onClick={() => scrollTo("contacts")}>Получить консультацию</button>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CARD SERVICES ─── */}
+      <section className="py-24 relative">
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(40,0,0,0.25) 0%, transparent 70%)" }} />
+        <div className="container mx-auto px-6 max-w-6xl relative">
+          <div className="text-center mb-16 reveal">
+            <p className="text-xs tracking-[6px] mb-4" style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,120,60,0.5)" }}>КАРТОЧНАЯ МАГИЯ</p>
+            <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a87a" }}>Ритуалы с картами</h2>
+            <p className="mt-4 text-sm italic" style={{ color: "rgba(160,130,90,0.5)", fontFamily: "'Cormorant Garamond', serif" }}>
+              игральные карты как проводник тёмной воли
+            </p>
+            <div className="section-divider mt-6"><span className="text-red-900/60 text-lg">✦</span></div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {cardServices.map((service, i) => (
+              <div
+                key={i}
+                className="reveal card-hover gothic-border p-7 group cursor-pointer flex flex-col"
+                style={{ background: "rgba(10,5,3,0.92)", transitionDelay: `${i * 0.05}s` }}
+              >
+                <div className="text-3xl mb-4 animate-float" style={{ animationDelay: `${i * 0.25}s` }}>
+                  {service.icon}
+                </div>
+                <h3 className="text-lg font-light mb-2" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#c8a878", lineHeight: 1.3 }}>
+                  {service.title}
+                </h3>
+                <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: "rgba(180,160,130,0.5)", fontWeight: 300 }}>
+                  {service.desc}
+                </p>
+                {service.note ? (
+                  <div className="text-xs mb-3 flex items-center gap-1" style={{ color: "rgba(160,100,60,0.6)", letterSpacing: "0.5px" }}>
+                    <span style={{ color: "rgba(139,0,0,0.5)" }}>◆</span> {service.note}
+                  </div>
+                ) : null}
+                <div className="flex items-center justify-between mt-auto pt-3" style={{ borderTop: "1px solid rgba(80,30,10,0.2)" }}>
+                  <div className="text-base font-light" style={{ fontFamily: "'Cormorant SC', serif", color: "hsl(0 55% 42%)", letterSpacing: "1px" }}>
+                    {service.price}
+                  </div>
+                  {service.term ? (
+                    <div className="text-xs" style={{ color: "rgba(140,110,70,0.45)", fontFamily: "'Cormorant SC', serif", letterSpacing: "1px" }}>
+                      {service.term}
+                    </div>
+                  ) : null}
+                </div>
+                <div className="mt-3 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: "rgba(139,0,0,0.35)" }} />
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12 reveal">
+            <button className="btn-dark" onClick={() => scrollTo("contacts")}>Заказать ритуал</button>
           </div>
         </div>
       </section>
