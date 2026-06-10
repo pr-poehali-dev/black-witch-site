@@ -552,6 +552,32 @@ export default function Index() {
         </div>
       </section>
 
+      {/* ─── SERIOUS ONLY ─── */}
+      <section className="pb-4 relative">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <div
+            className="reveal flex flex-col md:flex-row items-center gap-6 px-8 py-6"
+            style={{ background: "rgba(40,5,2,0.7)", border: "1px solid rgba(139,0,0,0.35)", borderLeft: "3px solid rgba(139,0,0,0.7)" }}
+          >
+            <div className="text-3xl animate-float flex-shrink-0">⚠️</div>
+            <div>
+              <p
+                className="text-xs tracking-[4px] mb-2"
+                style={{ fontFamily: "'Cormorant SC', serif", color: "rgba(180,80,60,0.7)" }}
+              >
+                ВАЖНО ПЕРЕД ОБРАЩЕНИЕМ
+              </p>
+              <p
+                className="text-base leading-relaxed"
+                style={{ fontFamily: "'Cormorant Garamond', serif", color: "rgba(210,175,130,0.85)", fontStyle: "italic" }}
+              >
+                Привороты и тёмные обряды я провожу <strong style={{ color: "#c8956a", fontStyle: "normal" }}>не всем</strong>. Только серьёзным людям, которые осознают вес своего запроса и готовы нести ответственность за последствия. Любопытным и несерьёзным — отказываю.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── SERVICES ─── */}
       <section id="services" className="py-32 relative">
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(60,0,0,0.35) 0%, transparent 60%)" }} />
